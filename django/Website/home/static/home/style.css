@@ -1,0 +1,38 @@
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+#header {
+	position: absolute;
+	width: 100%;
+}
+
+#university_department_name {
+	font-size: 30px;
+	text-align: center;
+}
+
+#header_box {
+	background-color: black;
+	height: 175px;
+}
+
+.header_text {
+	color: white;
+}
+
+#page_name_header {
+	position: relative;
+	text-align: center;
+	top: 45px;
+}
+
+#site_description {
+	position: relative;
+	margin:auto;
+	top: 35px;
+	text-align: center;
+	max-width: 60%;
+}
