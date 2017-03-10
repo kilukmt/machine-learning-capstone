@@ -1,0 +1,21 @@
+
+{% extends "home/base.html" %}
+
+{% block content %}
+<form id="create_user_form" action="">
+	<table id="create_user_table">
+		<tr>
+			<td><label for="name">Name:</label></td>
+			<td><input type="text" id="name" name="name"></td>
+		</tr>
+		<tr>
+			<td><label for="email">ASU Email:</label></td>
+			<td><input type="text" id="email" name="email"></td>
+		</tr>
+		<tr>
+			<td><label for="grad_year">Grad Year:</label></td>
+			<td><input type="text" id="grad_year" name="grad_year"></td>
+		</tr>
+	</table>
+</form>
+{% endblock %}

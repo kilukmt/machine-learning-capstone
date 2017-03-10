@@ -1,0 +1,22 @@
+<!doctype html>
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+<html>
+	<head>
+		<div id="header">
+			<div id="university_department_name">Appalachian State University Computer Science Department
+			</div>
+			<div id="header_box">
+				<div id="block_header_text">
+					<h1 id="page_name_header" class="text header_text">Machine Learning and Vision Coliseum</h1>
+					{% block description %}{% endblock %}
+				</div>
+			</div>
+		</div>
+	</head>
+	<body>
+		{% block content %}{% endblock %}
+	</body>
+</html>

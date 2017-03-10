@@ -36,7 +36,7 @@ show_sift_features(gray_goldfish, goldfish, k)
 # 		string += str(d[j][i]) + '\t'
 # 	print string
 # 	string = ''
-print len(k)
+# print len(k)
 pylab.show()
 
 #########################################################################
