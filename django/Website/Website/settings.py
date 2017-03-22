@@ -129,3 +129,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     ("css", "Website/css"),
 ]
+
+MEDIA_URL = 'ec2-54-191-194-177.us-west-2.compute.amazonaws.com/'
+MEDIA_ROOT = '/home/ec2-user/Website'
