@@ -1,0 +1,9 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<h1>{{ challenge.challenge_name }}</h1>
+<p>{{ challenge.challenge_description }}</p>
+<form action='{{ media_path }}{{ challenge.challenge_name }}{{ challenge.id }}.jpg'>
+	<input type="submit" value="Dowload Challenge" />
+</form>
+{% endblock %}

@@ -2,7 +2,7 @@
 {% extends "home/base.html" %}
 
 {% block content %}
-<form id="create_user_form" action="/user/cu/" method="post">
+<form id="create_user_form" action="/user/cu/" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 	<table id="create_user_table">
 		<tr>
@@ -16,6 +16,10 @@
 		<tr>
 			<td><label for="grad_year">Grad Year:</label></td>
 			<td><input type="text" id="grad_year" name="grad_year"></td>
+		</tr>
+		<tr>
+			<td><label for="user_picture">Picture:</label></td>
+			<td><input type="file" id="user_picture" name="user_picture"></td>
 		</tr>
 		<tr>
 			<td></td>

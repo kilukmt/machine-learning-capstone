@@ -130,5 +130,18 @@ STATICFILES_DIRS = [
     ("css", "Website/css"),
 ]
 
-MEDIA_URL = 'ec2-54-191-194-177.us-west-2.compute.amazonaws.com/'
-MEDIA_ROOT = '/home/ec2-user/Website'
+MEDIA_URL = 'media/'
+# MEDIA_ROOT = '/home/ec2-user/Website'
+ENV_PATH = os.path.abspath(os.path.dirname(__file__))
+
+'''
+    THIS MUST CHANGE WHEN WE PUSH WEBSITE TO LIVE LINUX SERVER
+    CHANGE IT TO THIS-->MEDIA_ROOT = os.path.join(ENV_PATH, 'z_Media/')
+'''
+MEDIA_ROOT = os.path.join(ENV_PATH, 'z_Media\\')
+MEDIA_ROOT_LOCAL = MEDIA_ROOT
+'''
+    ABOVE LINE MUST CHANGE WHEN WE PUSH TO LIVE LINUX SERVER
+'''
+
+DEFAULT_FILE_STORAGE = MEDIA_ROOT

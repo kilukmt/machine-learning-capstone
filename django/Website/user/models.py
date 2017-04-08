@@ -1,8 +1,14 @@
-from Website import default_images as default
 from django.db import models
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage as FSS
+
+ps = FSS(location=(settings.MEDIA_ROOT + 'users\\'))
 
 class Group(models.Model):
 	name = models.CharField(max_length=100)
+
+	def __str__(self):
+		return self.name
 
 class User(models.Model):
 	name = models.CharField(max_length=100)
@@ -10,4 +16,8 @@ class User(models.Model):
 	email = models.CharField(max_length=50)
 	grad_year = models.IntegerField(default=0)
 	groups = models.ManyToManyField(Group)
-	user_picture = models.ImageField(upload_to='Images/', default='Images/default_user.jpg')
+	user_picture = models.ImageField(storage=ps, max_length=300, default=(ps.location + 'default.jpg'))
+
+	def __str__(self):
+		return self.name
+		
