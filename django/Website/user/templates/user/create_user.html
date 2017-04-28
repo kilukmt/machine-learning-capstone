@@ -2,6 +2,11 @@
 {% extends "home/base.html" %}
 
 {% block content %}
+<form id="login" action="{% url 'user:login' %}" method="post">
+	{% csrf_token %}
+	<input class="btn btn-primary" type="submit" value="Login">
+</form>
+<h2> OR </h2>
 <form id="create_user_form" action="/user/cu/" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 	<table id="create_user_table">
@@ -19,7 +24,7 @@
 		</tr>
 		<tr>
 			<td><label for="user_picture">Picture:</label></td>
-			<td><input type="file" id="user_picture" name="user_picture"></td>
+			<td><input type="file" id="user_picture" class="" name="user_picture"></td>
 		</tr>
 		<tr>
 			<td></td>

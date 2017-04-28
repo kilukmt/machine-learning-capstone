@@ -31,11 +31,13 @@ def handle_uploaded_pic(pic, user_id):
 			destination.write(chunk)
 
 	# Create picture instance and save it to the database
-	pic = Picture(user=(User.objects.get(pk=user_id)), pic=fqpn)
+	pic = Picture(u=(User.objects.get(pk=user_id)), pic=fqpn)
 	pic.save()
 
-	# Link the picture instance with the user and save updates to the database
+	# Link the picture instance with the user
 	user.picture_set.add(pic)
+
+	# Save user to database
 	user.save()
 
 def image_directory_exists(path):
@@ -51,4 +53,20 @@ def date_time_squish():
 
 	# Should return string in the form: "2017-04-08_004659697793_<ldap>.jpg"
 	return s
+
+# Specifically used to check the return value of handle_uploaded_pic
+# if num == -1 return false
+# else return true
+def is_valid(num):
+	return not(int(num) < 0)
+
+# Given the ID requested, validate that the user making the request is associated with the ID
+def validate_current_user(request, ID):
+	try:
+		if (ID == request.session['user_id']):
+			return True
+		else:
+			return False
+	except KeyError:
+		return False
 	

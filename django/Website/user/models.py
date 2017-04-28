@@ -15,8 +15,8 @@ class User(models.Model):
 	password = models.CharField(max_length=100, default="")
 	email = models.CharField(max_length=50)
 	grad_year = models.IntegerField(default=0)
-	groups = models.ManyToManyField(Group)
-	user_picture = models.ImageField(storage=ps, max_length=300, default=(ps.location + 'default.jpg'))
+	groups = models.ManyToManyField(Group, blank=True)
+	user_picture = models.ImageField(storage=ps, max_length=300, default=(ps.location + '\\default.jpg'))
 
 	def __str__(self):
 		return self.name

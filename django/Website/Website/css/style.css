@@ -45,6 +45,19 @@ body {
 	margin: 0 auto;
 }
 
+#navbar {
+	position: absolute;
+	bottom: 0px;
+	margin: 0px;
+}
+
+#navbar>a {
+	position: relative;
+	top: 15px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
 #site_description {
 	position: absolute;
 	text-align: center;

@@ -3,14 +3,14 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage as FSS
 
 fs = FSS(location=(settings.MEDIA_ROOT + 'challenges\\'))
-ps = FSS(location=(settings.MEDIA_ROOT + 'challenge_avis\\'))
+ps = FSS(location=(fs.location + '\\challenge_avis\\'))
 
 class Challenge(models.Model):
 	challenge_name = models.CharField(max_length=100)
 	challenge_description = models.TextField()
-	challenge_files = models.FileField(storage=fs, max_length=300, default=(fs.location + 'default.txt'))
+	challenge_files = models.FileField(storage=fs, max_length=300, default=(fs.location + '\\default.txt'))
 	date_created = models.DateTimeField('date created')
-	challenge_image = models.ImageField(storage=ps, max_length=300, default=(ps.location + 'default.jpg'))
+	challenge_image = models.ImageField(storage=ps, max_length=300, default=(ps.location + '\\default.jpg'))
 
 	def __str__(self):
 		return self.challenge_name

@@ -5,4 +5,13 @@
 <h1>{{ user.name }}</h1>
 <h3>{{ user.email }}</h3>
 <h3>{{ user.grad_year }}</h3>
+<div id="user_picture{{ user.id }}">
+	<img src='{{ user.user_picture.url }}'>
+	{% if current_user %}
+	<form id="change_picture" method="post"  action="/user/changepicture{{ user.id }}/">
+	{% csrf_token %}
+		<input class="btn btn-primary" type="submit" value="Change Picture">
+	</form>
+	{% endif %}
+</div>
 {% endblock %}

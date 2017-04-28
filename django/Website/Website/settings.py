@@ -145,3 +145,5 @@ MEDIA_ROOT_LOCAL = MEDIA_ROOT
 '''
 
 DEFAULT_FILE_STORAGE = MEDIA_ROOT
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"

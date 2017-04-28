@@ -6,5 +6,5 @@ from user.models import User
 ps = FSS(location=(settings.MEDIA_ROOT + 'test_images\\'))
 
 class Picture(models.Model):
-	user = models.ForeignKey('user.User', on_delete=models.CASCADE, default=1)
-	pic = models.ImageField(storage=ps, max_length=300, default=(settings.MEDIA_ROOT + 'images\\default.jpg'))
+	u = models.ForeignKey('user.User', on_delete=models.CASCADE, default=1)
+	pic = models.ImageField(storage=ps, max_length=300, default=(settings.MEDIA_ROOT + '\\default.jpg'))
