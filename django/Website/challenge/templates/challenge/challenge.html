@@ -7,4 +7,9 @@
 <form action='{{ challenge.challenge_files }}'>
 	<input type="submit" value="Dowload Challenge" />
 </form>
+<table id="help_comments">
+{% for help_comment in latest_comment_list %}
+	{% include 'challenge/comment_frame.html' %}
+{% endfor %}
+</table>
 {% endblock %}

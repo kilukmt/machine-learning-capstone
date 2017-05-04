@@ -23,10 +23,15 @@ class Submission(models.Model):
 class HelpComment(models.Model):
 	challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, default=1)
 	user = models.ForeignKey('user.User', on_delete=models.CASCADE, default=1)
-	comment_replied_to = models.ForeignKey('self', on_delete=models.CASCADE, default=1)
+	comment_replied_to = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 	comment_text = models.TextField()
 	date = models.DateTimeField('date written')
+	num_replies = models.IntegerField(default=0)
 	up_votes = models.IntegerField(default=0)
 	down_votes = models.IntegerField(default=0)
 	pictures = models.ManyToManyField('home.Picture')
 
+	def __str__(self):
+		d = str(self.date).split()
+		d = d[0] + "_" + d[1].split("+")[0]
+		return self.user.name + "_" + d

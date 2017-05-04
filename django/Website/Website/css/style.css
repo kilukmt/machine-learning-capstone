@@ -71,3 +71,8 @@ body {
 #create_user_table td {
 	padding: 2px;
 }
+
+#comment_form_table tr#comment_row input {
+	height:200px;
+	width:300px;
+}

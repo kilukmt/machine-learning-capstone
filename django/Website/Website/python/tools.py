@@ -61,12 +61,15 @@ def is_valid(num):
 	return not(int(num) < 0)
 
 # Given the ID requested, validate that the user making the request is associated with the ID
-def validate_current_user(request, ID):
+def validate_current_user(session, ID):
 	try:
-		if (ID == request.session['user_id']):
+		if (ID == session['user_id']):
 			return True
 		else:
 			return False
 	except KeyError:
 		return False
+
+def datetimenow():
+	return datetime.datetime.now()
 	

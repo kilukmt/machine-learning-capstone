@@ -1,0 +1,25 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<a href="{% url 'challenge:challenge' comment.challenge.id %}">
+	<h3>CHALLENGE: {{ comment.challenge.challenge_name }}</h3>
+</a>
+<table id="comment_index">
+	<tr id="root_comment">
+		{% with comment as help_comment %}
+		<td>
+			{% include 'challenge/comment_frame.html' %}
+		</td>
+		{% endwith %}
+	</tr>
+
+	{% for help_comment in sub_comments %}
+	<tr>
+		<td></td>
+		<td>
+		{% include 'challenge/comment_frame.html' %}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

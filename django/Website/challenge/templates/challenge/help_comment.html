@@ -1,0 +1,38 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+{% if not comment_replied_to == None %}
+	{% with comment_replied_to as help_comment %}
+		{% include 'challenge/comment_frame.html' %}
+	{% endwith %}
+{% endif %}
+
+<br><br>
+
+<form id="comment_form" action="/challenge/post_comment/" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+	<table id="comment_form_table">
+		<tr>
+			<td><label for="comment_text">Comment</label></td>
+		</tr>
+		<tr id="comment_row">
+			<td><input type="text" id="comment_text" name="comment_text"></td>
+		</tr>
+		<tr hidden>
+			<td><label for="challenge_id"></label></td>
+			<td><input type="number" value="{{ challenge.id }}" id="challenge_id" name="challenge_id"></td>
+		</tr>
+		<tr hidden>
+			<td><label for="comment_id"></label></td>
+			{% if not comment_replied_to == None %}
+				<td><input type="number" value="{{ comment_replied_to.id }}" id="comment_id" name="comment_id"></td>
+			{% else %}
+				<td><input type="number" value="0" id="comment_id" name="comment_id"></td>
+			{% endif %}
+		</tr>
+		<tr>
+			<td><input class="btn btn-primary" type="submit" value="Post Comment"></td>
+		</tr>
+	</table>
+</form>
+{% endblock %}

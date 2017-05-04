@@ -12,8 +12,8 @@ class UserView(generic.DetailView):
 	model = User
 	template_name = 'user/user.html'
 
-def user(request, pk):
-	user = get_object_or_404(User, pk=pk)
+def user(request, user_id):
+	user = get_object_or_404(User, pk=user_id)
 	current_user = tools.validate_current_user(request.session, user.id)
 
 	return render(request, 'user/user.html', {

@@ -87,6 +87,13 @@ DATABASES = {
     }
 }
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -130,7 +137,7 @@ STATICFILES_DIRS = [
     ("css", "Website/css"),
 ]
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 # MEDIA_ROOT = '/home/ec2-user/Website'
 ENV_PATH = os.path.abspath(os.path.dirname(__file__))
 
