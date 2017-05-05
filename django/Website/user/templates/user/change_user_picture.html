@@ -2,7 +2,7 @@
 {% extends "home/base.html" %}
 
 {% block content %}
-<form id="change_user_picture_form" action="/user/cp{{ pk }}/" method="post" enctype="multipart/form-data">
+<form id="change_user_picture_form" action="/user/cp{{ user_id }}/" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 	<table>
 		<tr>

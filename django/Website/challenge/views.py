@@ -14,7 +14,7 @@ def challenges_home(request):
 def challenge_page(request, challenge_id):
 	challenge = get_object_or_404(Challenge, pk=challenge_id)
 	latest_comment_list = HelpComment.objects.filter(comment_replied_to=None).filter(challenge=challenge).order_by('date')
-	
+
 	return render(request, 'challenge/challenge.html', 
 		{
 			'challenge': challenge,

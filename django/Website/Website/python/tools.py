@@ -70,6 +70,12 @@ def validate_current_user(session, ID):
 	except KeyError:
 		return False
 
+def get_session_id(session):
+	try:
+		id = session['user_id']
+	except KeyError:
+		return 0
+
 def datetimenow():
 	return datetime.datetime.now()
 	

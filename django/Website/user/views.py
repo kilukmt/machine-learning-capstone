@@ -24,6 +24,14 @@ def user(request, user_id):
 def login(request):
 	return render(request, 'user/login.html', {})
 
+def logout(request):
+	try:
+		del request.session['user_id']
+	except KeyError:
+		pass
+
+	return HttpResponseRedirect('/')
+
 def process_login(request):
 	if request.method == 'POST':
 		form = LoginForm(request.POST)
@@ -61,17 +69,17 @@ def process_new_user(request):
 def create_user(request):
 	return render(request, 'user/create_user.html', {})
 
-def change_user_picture(request, pk):
+def change_user_picture(request, user_id):
 	return render(request, 'user/change_user_picture.html', {
-		'pk': pk,
+		'user_id': user_id,
 		})
 
-def process_change_user_picture(request, pk):
-	if (tools.validate_current_user(request, pk)):
+def process_change_user_picture(request, user_id):
+	if (tools.validate_current_user(request, user_id)):
 		if request.method == 'POST':
 			form = ChangePictureForm(request.POST, request.FILES)
 			if form.is_valid():
-				user = get_object_or_404(User, pk=pk)
+				user = get_object_or_404(User, pk=user_id)
 				user_picture = form.cleaned_data['user_picture']
 				user.user_picture = user_picture
 				user.save()
@@ -79,9 +87,9 @@ def process_change_user_picture(request, pk):
 			else:
 				return HttpResponse("Form is not valid")
 		else:
-			return HttpResponseRedirect('/user/' + str(pk) + '/')
+			return HttpResponseRedirect('/user/' + str(user_id) + '/')
 	else:
-		return HttpResponse("Invalid credentials id=" + str(pk) + ' when id should equal: ' + str(request.session['user_id']))
+		return HttpResponse("Invalid credentials id=" + str(user_id) + ' when id should equal: ' + str(request.session['user_id']))
 
 def test(request, user_id):
 	user = get_object_or_404(User, pk=user_id)

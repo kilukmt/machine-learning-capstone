@@ -19,6 +19,16 @@
 					<a href="{% url 'home:home' %}">HOME</a>
 					<a href="{% url 'challenge:home' %}">CHALLENGES</a>
 				</div>
+				{% if request.session.user_id %}
+				<div id="session_navbar" class="navbar">
+					<a href="{% url 'user:user' request.session.user_id %}">PROFILE</a>
+					<a href="{% url 'user:logout' %}">LOGOUT</a>
+				</div>
+				{% else %}
+				<div id="login_navbar" class="navbar">
+					<a href="{% url 'user:login' %}">LOGIN</a>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</head>
