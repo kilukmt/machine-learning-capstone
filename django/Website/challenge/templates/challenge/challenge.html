@@ -16,9 +16,11 @@
 </table>
 <table id="help_comments">
 	<tr>
-	{% for help_comment in latest_comment_list %}
-		{% include 'challenge/comment_frame.html' %}
-	{% endfor %}
+		<td>
+		{% for help_comment in latest_comment_list %}
+			{% include 'challenge/comment_frame.html' %}
+		{% endfor %}
+		</td>
 	</tr>
 </table>
 {% endblock %}
