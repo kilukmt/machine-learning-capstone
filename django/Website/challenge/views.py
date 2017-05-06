@@ -11,9 +11,11 @@ import datetime
 def challenges_home(request):
 	latest_challenge_list = Challenge.get_latest_challenges(5)
 	popular_challenge_list = Challenge.get_popular_challenges(5)
+	all_challenges = Challenge.objects.order_by('challenge_name')
 	return render(request, 'challenge/index.html', {
 			'latest_challenge_list': latest_challenge_list,
 			'popular_challenge_list': popular_challenge_list,
+			'all_challenges': all_challenges,
 		})
 
 def challenge_page(request, challenge_id):

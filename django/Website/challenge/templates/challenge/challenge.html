@@ -6,7 +6,7 @@
 <img src='{{ challenge.challenge_image.url }}'>
 <table id="challenge_action_buttons">
 	<tr>
-		<td><form action='{{ challenge.challenge_files }}'>
+		<td><form action='{{ challenge.challenge_files.url }}'>
 			<input type="submit" value="Dowload Challenge" />
 		</form>
 		</td>
@@ -15,8 +15,10 @@
 		</form>
 </table>
 <table id="help_comments">
-{% for help_comment in latest_comment_list %}
-	{% include 'challenge/comment_frame.html' %}
-{% endfor %}
+	<tr>
+	{% for help_comment in latest_comment_list %}
+		{% include 'challenge/comment_frame.html' %}
+	{% endfor %}
+	</tr>
 </table>
 {% endblock %}

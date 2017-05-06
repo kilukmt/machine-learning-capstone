@@ -102,11 +102,12 @@ def validate_challenge_files(challenge_files_zip):
 		class_num_defs = read_defs(challenge_file_directory)
 		if not class_num_defs['error']:
 			if valid_file_tree(challenge_file_directory, class_num_defs):
+				test_key = build_test_key(challenge_file_directory)
 				delete_dir(extracted_directory)
-				return True
+				return (True, test_key)
 
 	delete_dir(extracted_directory)
-	return False
+	return (False, "")
 
 def unzip_file(zip_filepath):
 	zip_filename = zip_filepath.split("\\")[-1]
@@ -192,7 +193,19 @@ def validate_test_dir(challenge_directory, class_num_defs):
 	for item in dir_items:
 		if not (('.jpg' in item) or ('.png' in item)):
 			return False
-		if not int(item[0]) in class_num_defs.values():
+		try:
+			if not int(item.split("_")[0]) in class_num_defs.values():
+				return False
+		except ValueError:
 			return False
 
 	return True
+
+def build_test_key(challenge_directory):
+	test_key = ""
+	dir_items = os.listdir(challenge_directory + '\\test')
+	for item in dir_items:
+		test_key += item.split("_")[0] + ', '
+
+	# Get rid of the last comma and return the key
+	return test_key[:-2]

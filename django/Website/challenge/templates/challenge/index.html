@@ -1,0 +1,15 @@
+
+{% extends "home/base.html" %}
+
+{% block content %}
+<div id="list_all_challenges">
+	<h3>All Challenges</h3>
+	<ul>
+	{% for challenge in all_challenges %}
+		<a href="{% url 'challenge:challenge' challenge.id %}">
+			<li>{{ challenge.challenge_name }}</li>
+		</a>
+	{% endfor %}
+	</ul>
+</div>
+{% endblock %}

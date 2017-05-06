@@ -1,22 +1,18 @@
+import os
+
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage as FSS
 from Website.python import tools
 
-# fs : file storage
-# ps : picture storage
-# bs : buffer storage
-fs = FSS(location=(settings.MEDIA_ROOT + 'challenges\\'))
-ps = FSS(location=(fs.location + '\\challenge_avis\\'))
-bs = FSS(location=(settings.MEDIA_ROOT + '\\groups\\'))
-
 class Challenge(models.Model):
 	challenge_name = models.CharField(max_length=100)
 	challenge_description = models.TextField()
-	challenge_files = models.FileField(storage=fs, max_length=300, default=(fs.location + '\\default.txt'))
+	challenge_files = models.FileField(upload_to="challenges\\", max_length=300, default='\\challenges\\default.zip')
 	date_created = models.DateTimeField('date_created')
-	challenge_image = models.ImageField(storage=ps, max_length=300, default=(ps.location + '\\default.jpg'))
+	challenge_image = models.ImageField(upload_to="challenges\\challenge_avis\\", max_length=300, default='\\challenges\\challenge_avis\\default.jpg')
+	test_key = models.TextField(blank=True, null=True)
 	submission_count = models.IntegerField(default=0)
 
 	# If a teacher wants to use the website to create a challenge,
@@ -25,19 +21,24 @@ class Challenge(models.Model):
 
 	def save(self):
 		super(Challenge, self).save()
-		if tools.validate_challenge_files(fs.location + '\\' + self.challenge_files.name):
+		zip_filepath = settings.MEDIA_ROOT + self.challenge_files.name
+		(valid_challenge_files, test_key) = tools.validate_challenge_files(zip_filepath)
+		if valid_challenge_files:
+			self.test_key = test_key
+			super(Challenge, self).save()
 			pass
 		else:
+			os.remove(zip_filepath)
 			self.delete()
 			raise Exception("Challenge files invalid")
 
 	# returns a list of the "num_challenges_requested" most recent Challenge objects
 	def get_latest_challenges(num_challenges_requested):
-		return Challenge.objects.all.order_by('date_created')[:num_challenges_requested]
+		return Challenge.objects.order_by('date_created')[:num_challenges_requested]
 	
 	# returns a list of the "num_challenges_requested" most popular Challenge objects (by submission count)
 	def get_popular_challenges(num_challenges_requested):
-		return Challenge.objects.all.order_by('submission_count')[:num_challenges_requested]
+		return Challenge.objects.order_by('submission_count')[:num_challenges_requested]
 
 	def __str__(self):
 		return self.challenge_name
@@ -48,7 +49,7 @@ class Submission(models.Model):
 	user = models.ForeignKey('user.User', null=True, on_delete=models.SET_NULL)
 	error_rate = models.DecimalField(max_digits=3, decimal_places=3)
 	latest_submission = models.DateTimeField('latest_submission')
-	code_files = models.FileField(storage=bs, max_length=300, blank=True, null=True)
+	code_files = models.FileField(upload_to="groups\\", max_length=300, blank=True, null=True)
 
 
 	def __str__(self):
@@ -76,7 +77,7 @@ post_delete.connect(submission_post_delete, sender=Submission)
 
 class SubmissionProcessingBuffer(models.Model):
 	group = models.ForeignKey(Submission, on_delete=models.CASCADE)
-	submission_files = models.FileField(storage=bs, max_length=300, default=(bs.location + '\\default.txt'))
+	submission_files = models.FileField(upload_to="groups\\", max_length=300, default='\\groups\\default.txt')
 
 
 class HelpComment(models.Model):
