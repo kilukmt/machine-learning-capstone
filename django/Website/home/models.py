@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage as FSS
-from user.models import User
 
 ps = FSS(location=(settings.MEDIA_ROOT + 'test_images\\'))
 

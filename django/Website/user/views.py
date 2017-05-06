@@ -56,8 +56,10 @@ def process_new_user(request):
 
 			# Validate email here!!!
 
+			individual_group = Group(name=email.split("@")[0])
 			user = User(name=name, email=email, grad_year=grad_year, user_picture=user_picture)
 			user.save()
+			individual_group.save()
 
 			return HttpResponseRedirect('/user/' + str(user.id) + '/')
 			
@@ -90,6 +92,14 @@ def process_change_user_picture(request, user_id):
 			return HttpResponseRedirect('/user/' + str(user_id) + '/')
 	else:
 		return HttpResponse("Invalid credentials id=" + str(user_id) + ' when id should equal: ' + str(request.session['user_id']))
+
+def group(request, group_id):
+	group = get_object_or_404(Group, pk=group_id)
+	group_members = User.objects.filter(groups=group)
+	return render(request, 'user/group.html', {
+			'group': group,
+			'group_members': group_members,
+		})
 
 def test(request, user_id):
 	user = get_object_or_404(User, pk=user_id)

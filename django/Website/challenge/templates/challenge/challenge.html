@@ -4,9 +4,16 @@
 <h1>{{ challenge.challenge_name }}</h1>
 <p>{{ challenge.challenge_description }}</p>
 <img src='{{ challenge.challenge_image.url }}'>
-<form action='{{ challenge.challenge_files }}'>
-	<input type="submit" value="Dowload Challenge" />
-</form>
+<table id="challenge_action_buttons">
+	<tr>
+		<td><form action='{{ challenge.challenge_files }}'>
+			<input type="submit" value="Dowload Challenge" />
+		</form>
+		</td>
+		<td><form action="{% url 'challenge:submit' challenge.id %}">
+			<input type="submit" value="Submit" />
+		</form>
+</table>
 <table id="help_comments">
 {% for help_comment in latest_comment_list %}
 	{% include 'challenge/comment_frame.html' %}

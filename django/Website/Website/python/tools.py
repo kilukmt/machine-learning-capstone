@@ -1,8 +1,11 @@
 import os
 import datetime
+import zipfile
+import shutil
 
 from django.conf import settings
-from user.models import User
+from django.db.models import Count
+from user.models import User, Group
 from home.models import Picture
 
 def handle_uploaded_file(file):
@@ -78,4 +81,118 @@ def get_session_id(session):
 
 def datetimenow():
 	return datetime.datetime.now()
-	
+
+def get_session_groups(session):
+	try:
+		groups = Group.objects.filter(user=User.objects.get(pk=session['user_id']))
+	except KeyError:
+		groups = []
+
+	return groups
+
+# Gets a .zip file, unzips it, and validates the format of the filesystem therein
+def validate_challenge_files(challenge_files_zip):
+	challenge_file_directory = unzip_file(challenge_files_zip)
+	challenge_file_directory = validate_unzip(challenge_file_directory)
+
+	# Build path to extracted files directory
+	extracted_directory = challenge_files_zip.split(".zip")[0]
+
+	if challenge_file_directory:
+		class_num_defs = read_defs(challenge_file_directory)
+		if not class_num_defs['error']:
+			if valid_file_tree(challenge_file_directory, class_num_defs):
+				delete_dir(extracted_directory)
+				return True
+
+	delete_dir(extracted_directory)
+	return False
+
+def unzip_file(zip_filepath):
+	zip_filename = zip_filepath.split("\\")[-1]
+	unzip_file_dir = zip_filepath.split(zip_filename)[0] + zip_filename.split(".zip")[0]
+	zip_reader = zipfile.ZipFile(zip_filepath, 'r')
+	zip_reader.extractall(unzip_file_dir)
+	zip_reader.close()
+
+	return unzip_file_dir
+
+# returns the true directory path of the challenge files being uploaded
+# or nothing if the extracted data is invalid
+def validate_unzip(extracted_directory):
+	dir_items = os.listdir(extracted_directory)
+	if len(dir_items) == 1:
+		target_dir = extracted_directory + '\\' + dir_items[0]
+		if os.path.isdir(target_dir):
+			return target_dir
+
+	return ""
+
+def delete_dir(dir_path):
+	shutil.rmtree(dir_path)
+
+# validates the format of the "class_num_defs.txt" file
+# and returns a dictionary of the entries
+def read_defs(challenge_directory):
+	try:
+		file_reader = open(challenge_directory + '\\class_num_defs.txt')
+	except FileNotFoundError:
+		return {'error': True }
+
+	class_num_defs = {}
+
+	for line in file_reader:
+		(num, name) = line.split(":")
+		name = name.split("\n")[0]
+		if (not name in class_num_defs) and (not num in class_num_defs.values()):
+			class_num_defs[name] = int(num)
+		else:
+			return {'error': True}
+
+	class_num_defs['error'] = False
+	return class_num_defs
+
+def valid_file_tree(challenge_directory, class_num_defs):
+	if os.path.isdir(challenge_directory + '\\test'):
+		if os.path.isdir(challenge_directory + '\\train'):
+			if len(os.listdir(challenge_directory)) == 3:
+				if validate_training_dir(challenge_directory, class_num_defs):
+					if validate_test_dir(challenge_directory, class_num_defs):
+						return True
+
+	return False
+
+def validate_training_dir(challenge_directory, class_num_defs):
+	train_dir = challenge_directory + '\\train'
+	dir_items = os.listdir(train_dir)
+
+	# examine every directory in the '/train' directory
+	for item in dir_items:
+
+		# check if the item in the '/train' directory really is a directory
+		if os.path.isdir(train_dir + '\\' + item):
+			if item in class_num_defs:
+
+				# Make sure all files in class training directory are images
+				class_training_imgs = os.listdir(train_dir + '\\' + item)
+				for img in class_training_imgs:
+					if not (('.jpg' in img) or ('.png' in img)):
+						return False
+			else:
+				return False
+		else:
+			return False
+
+	return True
+
+def validate_test_dir(challenge_directory, class_num_defs):
+	# Make sure all the items in the test directory are images and that
+	# they are formatted correctly with a valid class # leading the filename
+	dir_items = os.listdir(challenge_directory + '\\test')
+	for item in dir_items:
+		if not (('.jpg' in item) or ('.png' in item)):
+			return False
+		if not int(item[0]) in class_num_defs.values():
+			return False
+
+	return True

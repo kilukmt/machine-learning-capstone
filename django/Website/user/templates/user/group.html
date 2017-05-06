@@ -1,0 +1,14 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<div id="group_index">
+<h2>{{ group.name }} Members: </h2>
+<ul>
+{% for member in group_members %}
+	<li><a href="{% url 'user:user' member.id %}">
+		<img src="{{ member.user_picture.url }}">{{ member.name }}
+	</a></li>
+{% endfor %}
+</ul>
+</div>
+{% endblock %}

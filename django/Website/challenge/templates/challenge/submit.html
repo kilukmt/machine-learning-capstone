@@ -1,0 +1,41 @@
+
+{% extends "home/base.html" %}
+
+{% block content %}
+<h3>Submitting for: <a href="{% url 'challenge:challenge' challenge.id %}">{{ challenge.challenge_name }}</a></h3>
+<form id="submit_form" action="/challenge/submit/" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+	<table id="create_user_table">
+		<tr>
+			<td><label for="submission_file">Submission:</label></td>
+			<td><input type="file" id="submission_file" name="submission_file"></td>
+		</tr>
+		{% if challenge.code_required %}
+		<tr>
+			<td><label for="code_files">Code:</label></td>
+			<td><input type="file" id="code_files" name="code_files"></td>
+		</tr>
+		{% endif %}
+		<tr>
+			<td><label for="group">Group:</label></td>
+			<td>
+		{% for group in groups %}
+			<input type="radio" name="group" value="{{ group.name }}"> {{ group.name }} </br>
+		{% endfor %}
+			</td>
+		</tr>
+		<tr hidden>
+			<td><label for="challenge_id"></label></td>
+			<td><input type="number" value="{{ challenge.id }}" id="challenge_id" class="" name="challenge_id"></td>
+		</tr>
+		<tr hidden>
+			<td><label for="user_id"></label></td>
+			<td><input type="number" value="{{ request.session.user_id }}" id="user_id" class="" name="user_id"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input class="btn btn-primary" type="submit" value="Submit"></td>
+		</tr>
+	</table>
+</form>
+{% endblock %}

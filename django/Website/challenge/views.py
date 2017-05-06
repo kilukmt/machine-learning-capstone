@@ -3,13 +3,18 @@ from Website.python import tools
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from .models import Challenge, Submission, HelpComment
-from home.models import User
+from user.models import User, Group
 from .forms import CommentForm
 
 import datetime
 
 def challenges_home(request):
-	return render(request, 'challenge/index.html', {})
+	latest_challenge_list = Challenge.get_latest_challenges(5)
+	popular_challenge_list = Challenge.get_popular_challenges(5)
+	return render(request, 'challenge/index.html', {
+			'latest_challenge_list': latest_challenge_list,
+			'popular_challenge_list': popular_challenge_list,
+		})
 
 def challenge_page(request, challenge_id):
 	challenge = get_object_or_404(Challenge, pk=challenge_id)
@@ -21,6 +26,21 @@ def challenge_page(request, challenge_id):
 			'latest_comment_list': latest_comment_list,
 			'media_path': settings.MEDIA_ROOT,
 		})
+
+def submit(request, challenge_id):
+	challenge = get_object_or_404(Challenge, pk=challenge_id)
+	groups = tools.get_session_groups(request.session)
+
+	if groups:
+		return render(request, 'challenge/submit.html', {
+				"challenge": challenge,
+				"groups": groups,
+			})
+	else:
+		return HttpResponseRedirect('/user/login/')
+
+def process_submit(request):
+	pass
 
 def index_help_comment(request, comment_id):
 	comment = get_object_or_404(HelpComment, pk=comment_id)

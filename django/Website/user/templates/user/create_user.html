@@ -2,7 +2,7 @@
 {% extends "home/base.html" %}
 
 {% block content %}
-<form id="login" action="{% url 'user:login' %}" method="post">
+<form id="login_button" action="{% url 'user:login' %}" method="post">
 	{% csrf_token %}
 	<input class="btn btn-primary" type="submit" value="Login">
 </form>
