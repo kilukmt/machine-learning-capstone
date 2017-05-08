@@ -82,7 +82,7 @@ def index_help_comment(request, comment_id):
 			'sub_comments': sub_comments,
 		})
 
-def help_comment(request, challenge_id, comment_id):
+def help_comment(request, challenge_id, comment_id=0):
 	challenge = get_object_or_404(Challenge, pk=challenge_id)
 
 	try:

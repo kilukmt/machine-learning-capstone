@@ -8,13 +8,12 @@
 </thead>
 <tbody>
 	{% for submission in submissions %}
-	<a href="{% url 'user:group' submission.group.id %}">
 	<tr>
 		<td>{{ submission.error_rate }}</td>
-		<td>{{ submission.group.name }}</td>
+		<td><a href="{% url 'user:group' submission.group.id %}">{{ submission.group.name }}</a>
+		</td>
 		<td>{{ submission.latest_submission }}</td>
 	</tr>
-	</a>
 	{% endfor%}
 </tbody>
 </table>

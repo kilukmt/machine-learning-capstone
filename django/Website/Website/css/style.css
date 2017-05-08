@@ -135,6 +135,36 @@ table#challenge_action_buttons td {
 	width:300px;
 }
 
+#comment {
+	border: 1px solid;
+	margin: 2px;
+}
+
+#comment_form_table tr#comment_row input {
+	height:200px;
+	width:300px;
+}
+
+#comment #reply_row td {
+	padding: 3px;
+}
+
+#comment #posted_by td {
+	padding: 10px;
+}
+
+#comment #user_img  img {
+	height: 60px;
+}
+
+#comment #comment_text {
+	border-top: 1px solid;
+}
+
 div#group_index img {
 	height:125px;
+}
+
+table#group_index td {
+	padding: 15px;
 }

@@ -23,7 +23,7 @@
 		{% else %}
 		<form id="leave_group" action="{% url 'user:leave_group' group.id %}" method="post">
 		{% csrf_token %}
-		<input class="btn btn-warning" type="submit" value="Leave Group">
+		<input class="btn btn-danger" type="submit" value="Leave Group">
 		</form>
 		{% endif %}
 	</td>

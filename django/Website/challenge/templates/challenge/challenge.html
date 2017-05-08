@@ -35,6 +35,13 @@
 	<tr>
 		{% include 'challenge/challenge_leaderboard.html' %}
 	</tr>
+	<tr><td><br></td></tr>
+	<tr>
+		<td><form action="{% url 'challenge:base_help_comment' challenge.id %}">
+					<input type="submit" value="Post Comment" />
+			</form>
+		</td>
+	</tr>
 	<tr>
 		<table id="help_comments">
 			<tr>

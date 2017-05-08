@@ -144,7 +144,7 @@ def process_new_group(request):
 	if request.method == 'POST':
 		form = CreateGroupForm(request.POST)
 		if form.is_valid():
-			name = form.cleaned_data['name']
+			name = form.cleaned_data['group_name']
 			user = User.objects.get(pk=request.session['user_id'])
 			new_group = Group(name=name)
 			new_group.save()

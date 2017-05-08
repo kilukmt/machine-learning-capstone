@@ -1,30 +1,32 @@
 <table id="comment">
-	<a href="{% url 'user:user' help_comment.user.id %}">
 	<tr id="posted_by">
 		<td id="user_img">
 			<img src="{{ help_comment.user.user_picture.url }}">
 		</td>
 		<td>
-			<p>Posted by: {{ help_comment.user.name }}</p>
+			<a href="{% url 'user:user' help_comment.user.id %}">
+			<p>{{ help_comment.user.name }}</p>
+			</a>
+			<br>
+			<p>{{ help_comment.date }}</p>
 		</td>
 	</tr>
 	</a>
 	<tr>
-		<td><p>{{ help_comment.comment_text }}</p>
+		<td colspan="2"><p id="comment_text">{{ help_comment.comment_text }}</p>
 		</td>
 	</tr>
-	<tr>
+	<tr id="reply_row">
 		<td>
 		<form id="reply_form" action="/challenge/{{ help_comment.challenge.id }}/helpcomment/{{ help_comment.id }}/" method="post">
 		{% csrf_token %}
 		<input type="submit" value="Reply">
 		</form>
 		</td>
-
-		{% if help_comment.num_replies > 0 %}
 		<td>
+		{% if help_comment.num_replies > 0 %}
 			<a href="{% url 'challenge:comment' help_comment.id %}">see replies</a>
-		</td>
 		{% endif %}
+		</td>
 	</tr>
 </table>

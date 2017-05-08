@@ -16,5 +16,5 @@ class ChangePictureForm(forms.Form):
 	user_picture = forms.ImageField(label='user_picture')
 
 class CreateGroupForm(forms.Form):
-	name = forms.CharField(label='group_name', max_length=100)
+	group_name = forms.CharField(label='group_name', max_length=100)
 	
