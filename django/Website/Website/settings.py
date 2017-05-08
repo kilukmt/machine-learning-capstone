@@ -11,10 +11,15 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Python modules
+DNS_MODULE_PATH = BASE_DIR + "\\Website\\python"
+
+sys.path.append(DNS_MODULE_PATH)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -116,6 +121,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     ("css", "Website/css"),
+    ("text", "Website/text"),
 ]
 
 MEDIA_URL = '/media/'

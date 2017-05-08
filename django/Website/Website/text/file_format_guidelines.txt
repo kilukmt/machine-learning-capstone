@@ -1,0 +1,83 @@
+		***************************************************************************
+		***	ALL VIOLATIONS OF FORMAT WILL RESULT IN THE UPLOAD FAILING	***
+		***************************************************************************
+
+Challenge Directory Format
+
+
+	The challenge directory **must** be in this format with exact directory names
+		The train directory within must have one or more subdirectories
+
+	Directory tree:
+					  - test/
+					 /
+					/
+			directory_root	-- class_num_defs.txt
+					\
+					 \
+					  - train/ -- <classname>/
+						   \
+						    \
+						     - <classname>/
+
+
+
+	"test/" directory format:
+		EVERY item **must** be an image file
+		EVERY file **must** have the filename in this format: <classification #>_<rest of filename><image file tag>
+			NOTE THE UNDERSCORE
+			Examples: "1_test.jpg", "7_example.png"
+			<classification #> **MUST** be defined in the file "<challenge_directory>/class_num_defs.txt"
+
+	"train/" directory format:
+		EVERY item **must** be a directory
+		EVERY directory **must** be a classname defined in the file "<challenge_directory>/class_num_defs.txt"
+
+	"train/<classname>/" directory format:
+		EVERY item **must** be an image file
+
+
+
+"class_num_defs.txt" File Format
+
+
+	EVERY challenge directory must have a file called "class_num_defs.txt"
+	EVERY "class_num_defs.txt" file **must** have one or more lines defining the class/# relationship
+	
+	file format:
+		1|<classification #>:<class name>
+		 .
+		 .
+		 .
+		n|<classification #>:<class name>
+	
+	There can be **NO** duplicate <classification #>
+	There can be **NO** duplicate <class name>
+
+
+
+Submission Directory Format
+
+
+	-SUBMIT 1 TEXT DOCUMENT-
+
+	Groups who submit will need to format their submission as a text file
+	with the classification # for image_n from the directory "<challenge_directory>/test/"
+	on line n of the text file where n is the index of the image in the "test" directory.
+	For example: the first line in the submission file corresponds to the first image
+	in the directory "<challenge_directory>/test/"
+
+	The classification #s for image classes is defined
+	in the file at "<challenge_directory>/class_num_defs.txt"
+
+	Submission format:
+		1|<classification number for 1st image in "test" directory>
+		2|<classification number for 2nd image in "test" directory>
+		3|<classification number for 3rd image in "test" directory>
+		 .
+		 .
+		 .
+		n|<classification number for nth image in "test" directory>
+
+	-NOTE: 	don't include line numbers or '|' character;
+		n is the number of images in the directory "<challenge_directory>/test/"

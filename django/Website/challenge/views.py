@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from .models import Challenge, Submission, HelpComment
 from user.models import User, Group
-from .forms import CommentForm
+from .forms import CommentForm, SubmissionForm
 
 import datetime
 
@@ -21,11 +21,13 @@ def challenges_home(request):
 def challenge_page(request, challenge_id):
 	challenge = get_object_or_404(Challenge, pk=challenge_id)
 	latest_comment_list = HelpComment.objects.filter(comment_replied_to=None).filter(challenge=challenge).order_by('date')
+	submissions = Submission.objects.filter(challenge=challenge).order_by('-error_rate')[:100]
 
 	return render(request, 'challenge/challenge.html', 
 		{
 			'challenge': challenge,
 			'latest_comment_list': latest_comment_list,
+			'submissions': submissions,
 			'media_path': settings.MEDIA_ROOT,
 		})
 
@@ -42,7 +44,35 @@ def submit(request, challenge_id):
 		return HttpResponseRedirect('/user/login/')
 
 def process_submit(request):
-	pass
+	if request.method == 'POST':
+		form = SubmissionForm(request.POST, request.FILES)
+		if form.is_valid():
+			challenge = Challenge.objects.get(id=form.cleaned_data['challenge_id'])
+			group = Group.objects.get(name=form.cleaned_data['group'])
+			user = User.objects.get(id=form.cleaned_data['user_id'])
+			submission_file = form.cleaned_data['submission_file']
+
+			if tools.submission_is_valid(submission_file):
+				test_key = challenge.test_key
+				error_rate = tools.evaluate_submission(submission_file, test_key)
+			else:
+				return HttpResponseRedirect('/challenge/' + challenge.id + '/submit')
+
+			if form.cleaned_data['code_files'] == None:
+				submission = Submission(challenge=challenge, group=group, user=user, error_rate=error_rate, latest_submission=tools.datetimenow())
+			else:
+				submission = Submission(challenge=challenge, group=group, user=user, error_rate=error_rate,\
+										latest_submission=tools.datetimenow(), code_files=form.cleaned_data['code_files'])
+
+			submission.save()
+			return render(request, 'challenge/submission_results.html', {
+					'challenge': challenge,
+					'error_rate': error_rate,
+				})
+		else:
+			return HttpResponse("Form is invalid")
+	else:
+		return HttpResponse("Invalid request")
 
 def index_help_comment(request, comment_id):
 	comment = get_object_or_404(HelpComment, pk=comment_id)

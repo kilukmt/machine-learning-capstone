@@ -1,0 +1,20 @@
+
+{% extends "home/base.html" %}
+
+{% block content %}
+<div id="create_group_wrapper">
+<form id="create_group_form" action="/user/cg/" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+	<table id="create_group_table">
+		<tr>
+			<td><label for="group_name">Group name:</label></td>
+			<td><input type="text" id="group_name" class="" name="group_name"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input class="btn btn-primary" type="submit" value="Create group"></td>
+		</tr>
+	</table>
+</form>
+</div>
+{% endblock %}

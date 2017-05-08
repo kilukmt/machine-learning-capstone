@@ -11,7 +11,7 @@ class Group(models.Model):
 class User(models.Model):
 	name = models.CharField(max_length=100)
 	password = models.CharField(max_length=100, default="")
-	email = models.CharField(max_length=50)
+	email = models.EmailField(max_length=100)
 	grad_year = models.IntegerField(default=0)
 	groups = models.ManyToManyField(Group)
 	user_picture = models.ImageField(upload_to="users\\", max_length=300, default='\\users\\default.jpg')

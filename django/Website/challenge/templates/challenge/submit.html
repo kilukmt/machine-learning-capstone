@@ -5,10 +5,10 @@
 <h3>Submitting for: <a href="{% url 'challenge:challenge' challenge.id %}">{{ challenge.challenge_name }}</a></h3>
 <form id="submit_form" action="/challenge/submit/" method="post" enctype="multipart/form-data">
 {% csrf_token %}
-	<table id="create_user_table">
+	<table id="submit_form">
 		<tr>
 			<td><label for="submission_file">Submission:</label></td>
-			<td><input type="file" id="submission_file" name="submission_file"></td>
+			<td><input type="file" id="submission_file" class="" name="submission_file"></td>
 		</tr>
 		{% if challenge.code_required %}
 		<tr>
@@ -18,11 +18,11 @@
 		{% endif %}
 		<tr>
 			<td><label for="group">Group:</label></td>
+			{% for group in groups %}
 			<td>
-		{% for group in groups %}
-			<input type="radio" name="group" value="{{ group.name }}"> {{ group.name }} </br>
-		{% endfor %}
+				<input type="radio" id="group" name="group" value="{{ group.name }}"> {{ group.name }}
 			</td>
+			{% endfor %}
 		</tr>
 		<tr hidden>
 			<td><label for="challenge_id"></label></td>

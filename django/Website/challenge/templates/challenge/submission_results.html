@@ -1,0 +1,7 @@
+
+{% extends "home/base.html" %}
+
+{% block content %}
+<h3>Submission for: <a href="{% url 'challenge:challenge' challenge.id %}">{{ challenge.challenge_name }}</a></h3>
+<h2>Error rate: {{ error_rate }}</h2>
+{% endblock %}

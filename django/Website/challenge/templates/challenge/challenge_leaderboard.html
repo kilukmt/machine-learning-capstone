@@ -1,0 +1,20 @@
+<table id="challenge{{challenge.id}}_leaderboard" class="index_challenge_leaderboard">
+<thead>
+	<tr>
+		<th>Error Rate</th>
+		<th>Group</th>
+		<th>Date Submitted</th>
+	</tr>
+</thead>
+<tbody>
+	{% for submission in submissions %}
+	<a href="{% url 'user:group' submission.group.id %}">
+	<tr>
+		<td>{{ submission.error_rate }}</td>
+		<td>{{ submission.group.name }}</td>
+		<td>{{ submission.latest_submission }}</td>
+	</tr>
+	</a>
+	{% endfor%}
+</tbody>
+</table>

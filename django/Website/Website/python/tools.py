@@ -3,10 +3,34 @@ import datetime
 import zipfile
 import shutil
 
+# For email verification
+import dns.resolver
+import socket
+import smtplib
+
 from django.conf import settings
 from django.db.models import Count
 from user.models import User, Group
 from home.models import Picture
+
+def verify_email(email):
+	mx_record = get_mx_record()
+	host = socket.gethostname()
+
+	server = smtplib.SMTP()
+	server.set_debuglevel(0)
+
+	server.connect(mx_record)
+	server.helo(host)
+	server.mail('verification@student.cs.appstate.edu')
+	code, message = server.rcpt(email)
+
+	return (code == 250)
+
+def get_mx_record():
+	asu_email_domain = "appstate.edu"
+	records = dns.resolver.query(asu_email_domain, 'MX')
+	return str(records[0].exchange)
 
 def handle_uploaded_file(file):
 	return 1
@@ -209,3 +233,39 @@ def build_test_key(challenge_directory):
 
 	# Get rid of the last comma and return the key
 	return test_key[:-2]
+
+def submission_is_valid(submission_file):
+	data = submission_file.read()
+	submission_file.seek(0)
+	data = data.decode()
+	lines = []
+	for byte in data:
+		if byte == "\r" or byte == "\n":
+			pass
+		else:
+			lines.append(byte)
+
+	for line in lines:
+		 if not line.isdigit():
+		 	return False
+
+	return True
+
+def evaluate_submission(submission_file, test_key):
+	key = [int(num) for num in test_key.split(", ")]
+	num_test_images = len(key)
+	submission_key = []
+	
+	data = submission_file.read()
+	submission_file.seek(0)
+	data = data.decode()
+	for byte in data:
+		if byte == "\r" or byte == "\n":
+			pass
+		else:
+			submission_key.append(int(byte))
+
+	if num_test_images != len(submission_key):
+		return 1.000
+
+	return (sum(i != j for i, j in zip(key, submission_key)) / num_test_images)

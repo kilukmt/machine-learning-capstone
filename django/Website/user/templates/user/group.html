@@ -2,13 +2,32 @@
 
 {% block content %}
 <div id="group_index">
-<h2>{{ group.name }} Members: </h2>
-<ul>
-{% for member in group_members %}
-	<li><a href="{% url 'user:user' member.id %}">
-		<img src="{{ member.user_picture.url }}">{{ member.name }}
-	</a></li>
-{% endfor %}
-</ul>
+<table>
+	<tr>
+	<td>
+		<h2>{{ group.name }} Members </h2>
+		<ul>
+		{% for member in group_members %}
+			<li><a href="{% url 'user:user' member.id %}">
+				<img src="{{ member.user_picture.url }}">{{ member.name }}
+			</a></li>
+		{% endfor %}
+		</ul>
+	</td>
+	<td>
+		{% if not user_in_group %}
+		<form id="join_group" action="{% url 'user:join_group' group.id %}" method="post">
+		{% csrf_token %}
+		<input class="btn btn-primary" type="submit" value="Join Group">
+		</form>
+		{% else %}
+		<form id="leave_group" action="{% url 'user:leave_group' group.id %}" method="post">
+		{% csrf_token %}
+		<input class="btn btn-warning" type="submit" value="Leave Group">
+		</form>
+		{% endif %}
+	</td>
+	</tr>
+</table>
 </div>
 {% endblock %}

@@ -1,26 +1,51 @@
 {% extends "home/base.html" %}
 
 {% block content %}
-<h1>{{ challenge.challenge_name }}</h1>
-<p>{{ challenge.challenge_description }}</p>
-<img src='{{ challenge.challenge_image.url }}'>
-<table id="challenge_action_buttons">
+<div id="challenge_page">
+	<table>
 	<tr>
-		<td><form action='{{ challenge.challenge_files.url }}'>
-			<input type="submit" value="Dowload Challenge" />
-		</form>
-		</td>
-		<td><form action="{% url 'challenge:submit' challenge.id %}">
-			<input type="submit" value="Submit" />
-		</form>
-</table>
-<table id="help_comments">
+		<td><img src='{{ challenge.challenge_image.url }}' id="challenge_image"></td>
+	</tr>
 	<tr>
-		<td>
-		{% for help_comment in latest_comment_list %}
-			{% include 'challenge/comment_frame.html' %}
-		{% endfor %}
+		<td><h1>{{ challenge.challenge_name }}</h1></td>
+	</tr>
+	<tr>
+		<td><p>{{ challenge.challenge_description }}</p></td>
+	</tr>
+	<tr></tr>
+	<tr>
+		<td align="center">
+		<table id="challenge_action_buttons">
+			<tr>
+				<td><form action='{{ challenge.challenge_files.url }}'>
+					<input type="submit" value="Dowload Challenge" />
+				</form>
+				</td>
+				<td><form action="{% url 'challenge:submit' challenge.id %}">
+					<input type="submit" value="Submit" />
+				</form>
+				</td>
+			</tr>
+		</table>
 		</td>
 	</tr>
-</table>
+
+	<tr id="challenge_page_row_break"></tr>
+
+	<tr>
+		{% include 'challenge/challenge_leaderboard.html' %}
+	</tr>
+	<tr>
+		<table id="help_comments">
+			<tr>
+				<td>
+				{% for help_comment in latest_comment_list %}
+					{% include 'challenge/comment_frame.html' %}
+				{% endfor %}
+				</td>
+			</tr>
+		</table>
+	</tr>
+	</table>
+</div>
 {% endblock %}

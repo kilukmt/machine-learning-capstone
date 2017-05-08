@@ -1,0 +1,23 @@
+
+{% extends "home/base.html" %}
+
+{% block content %}
+<table id="group_index">
+<tr>
+	<td id="group_list">
+		<ul>
+		{% for group in groups %}
+			<li><a href="{% url 'user:group' group.id %}">{{ group.name }}</a></li>
+		{% endfor %}
+		</ul>
+	</td>
+	<td>
+		<form id="create_group" action="{% url 'user:create_group' %}" method="post">
+		{% csrf_token %}
+		<input class="btn btn-primary" type="submit" value="Create Group">
+		</form>
+	</td>
+</tr>
+</table>
+
+{% endblock %}
